@@ -6,8 +6,6 @@ The project was developed using Vue, integrated together with localStorage and m
 
 The development consisted primarily of prototyping the screen using Figma (the file can be found in `./src/sources`), and after that developed the entire application using the chosen framework.
 
-# 
-
 ## To start the application
 
 ### Install the dependencies
