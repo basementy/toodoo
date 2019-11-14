@@ -1,24 +1,23 @@
-# fesc_test
+# FESC - Challenge
 
-## Project setup
+This is a repository for the challenge sent by FESC. The challenge consists of a simple To-do List.
+
+The project was developed using Vue, integrated together with localStorage and moment.js.
+
+The development consisted primarily of prototyping the screen using Figma (the file can be found in `./src/sources`), and after that developed the entire application using the chosen framework.
+
+# 
+
+## To start the application
+
+### Install the dependencies
 ```
-yarn install
+yarn
 ```
 
-### Compiles and hot-reloads for development
+### Start the development server
 ```
 yarn serve
 ```
 
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Now you can visit `localhost:8080` from your browser.
