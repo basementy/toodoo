@@ -5,7 +5,7 @@
       <div id="titleContainer">
         <span id="itemTitle">{{ todo.title }}</span>
       </div>
-      <button @click="$emit('deleteTodo', todo.id)" id="delete"><i class="fas fa-trash-alt"></i></button>
+      <button @click="deleteTodo(todo.id, type)" id="delete"><i class="fas fa-trash-alt"></i></button>
     </div>
   </div>
 </template>
@@ -13,18 +13,30 @@
 <script>
 export default {
   name: "TodoItem",
-  props: ["todo", "type"],
+  props: [
+    "todo", 
+    "type"
+  ],
   methods: {
     markComplete(id, type) {
-      console.log('Working');
+      var data = JSON.parse(localStorage.getItem('todos'));
+      var todos = data[type].todos;
+      var todoIndex = todos.findIndex(todo => todo.id == id)
+      data[type].todos[todoIndex].completed = !data[type].todos[todoIndex].completed
 
-      var todos = JSON.parse(localStorage.getItem('todos'));
+      localStorage.setItem('todos', JSON.stringify(data));
 
-      console.log(todos[type])
+      this.$emit('update');
+    },
+    deleteTodo(id, type) {
+      var data = JSON.parse(localStorage.getItem('todos'));
+      var updatedTodos = data[type].todos.filter(todo => todo.id != id);
 
-      todos[type].todos[0].completed = !todos.type.todos[id].completed;
+      data[type].todos = updatedTodos;
 
-      localStorage.setItem('todos', JSON.stringify(todos));
+      localStorage.setItem('todos', JSON.stringify(data));
+
+      this.$emit('update');
     },
   }
 }
@@ -51,6 +63,7 @@ export default {
   #itemContainer {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
   }
 
 

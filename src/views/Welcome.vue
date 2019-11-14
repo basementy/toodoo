@@ -1,6 +1,6 @@
 <template>
 	<div class="app">
-		<div id="welcomeContainer" class="container col-11 col-sm-6 col-md-4">
+		<div id="welcomeContainer" class="container col-11 col-sm-8 col-md-4">
       <form @submit="addName" id="welcomeForm">
         <h1 id="welcomeTitle">Welcome,</h1>
         <h3 id="welcomeDescription">That's your personal task manager!</h3>
@@ -12,6 +12,9 @@
           placeholder="Tell me your name">
         <div id="welcomeDetail"></div>
         <button type="submit" id="welcomeButton">Let's Start!</button>
+        <div v-if="error" id="errorContainer">
+          <span id="errorMessage">Please, tell me your name!</span>
+        </div>
       </form>
     </div>
 	</div>
@@ -23,7 +26,8 @@ export default {
 
   data() {
     return {
-      name: ''
+      name: '',
+      error: false
     };
   },
 
@@ -37,7 +41,7 @@ export default {
 	
 				this.$router.push('/');
 			} else {
-				alert('Informe seu nome!')
+				this.error = true
 			}
 		},
 		
@@ -72,10 +76,13 @@ export default {
   #welcomeTitle {
     font-size: 30px;
     font-weight: 900;
+    color: #8A6BF2;
   }
 
   #welcomeDescription {
     font-size: 22px;
+    font-weight: 600;
+    color: rgb(151, 151, 151);
   }
 
   #welcomeInput {
@@ -88,23 +95,23 @@ export default {
     font-size: 24px;
     text-align: center;
     font-weight: 600;
-    color: rgb(134, 134, 134);
+    color: rgb(175, 156, 240);
   }::placeholder {
-    color: rgb(204, 204, 204);
+    color: rgb(210, 196, 255);
   }
 
   #welcomeDetail {
     width: 100%;
     height: 5px;
-    background-color: black;
+    background-color: #8A6BF2;
   }
 
   #welcomeButton {
-    height: 50px;
+    height: 60px;
     margin-top: 40px;
     border: none;
     outline: none;
-    background-color: black;
+    background-color: #8A6BF2;
     color: white;
     border-radius: 3px;
     cursor: pointer;
@@ -113,5 +120,30 @@ export default {
     font-weight: 500;
   } #welcomeButton:hover {
     transform: translateY(-3px);
+  }
+
+  @keyframes error {
+  from {opacity: 0}
+  to {opacity: 1}
+  }
+
+  @-webkit-keyframes error {
+  from {opacity: 0}
+  to {opacity: 1}
+  }
+
+  #errorContainer {
+    margin: 35px 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    -webkit-animation-name: error; /* Safari 4.0 - 8.0 */
+    -webkit-animation-duration: 2s; /* Safari 4.0 - 8.0 */
+    animation-name: error;
+    animation-duration: 1s;
+  } #errorMessage {
+    color: rgb(189, 79, 79);
+    font-weight: 600;
+    text-align: center;
   }
 </style>

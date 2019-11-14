@@ -1,7 +1,11 @@
 <template>
   <div class="app">
-    <TodoModal v-if="showModal" v-on:closeModal="showModal = false"/>
-    <div id="homeContainer" class="container col-11 col-sm-9 col-md-6 col-lg-6 col-xl-4">
+    <TodoModal
+      v-if="showModal"
+      v-on:addTodo="addTodo"
+      v-on:closeModal="showModal = false"
+    />
+    <div id="homeContainer" class="container col-11 col-sm-9 col-md-8 col-lg-7 col-xl-6">
       <span id="homeDate" class="mx-4">{{ date }}</span>
       <h2 id="homeTitle" class="mb-4 mx-4">Hello, {{ name }}</h2>
       <h3 id="homeDescription" class="mx-4">It's <span>{{ weekDay }}</span>. What's good for today?</h3>
@@ -9,10 +13,12 @@
         <TodoCard 
           v-for="card in todos" 
           :key="card.title" 
-          :title="card.cardTitle" 
+          :cardTitle="card.cardTitle" 
           :todos="card.todos"
           :type="card.cardType"
-          v-on:openModal="showModal = true"/>
+          v-on:update="getTodos"
+          v-on:openModal="openModal"
+        />
       </div>
     </div>
   </div>
@@ -35,6 +41,7 @@ export default {
       name: "",
       date: "",
       weekDay: "",
+      todoType: "",
       showModal: false,
       todos: {}
     };
@@ -45,12 +52,10 @@ export default {
         this.todos = JSON.parse(localStorage.getItem('todos'));
       } else {
         localStorage.setItem('todos', JSON.stringify({ 
-          morning: { cardTitle: 'Morning', cardType: 'morning', todos:[{ id: 1, title: 'Teste', completed: false }]}, 
+          morning: { cardTitle: 'Morning', cardType: 'morning', todos:[]}, 
           atWork: { cardTitle: 'At Work', cardType: 'atWork', todos: []}
         }));
       }
-
-      console.log(this.todos)
     },
     getName() {
       if (localStorage.getItem("userName")) {
@@ -63,21 +68,23 @@ export default {
       this.date = moment().format("D MMM YYYY");
       this.weekDay = moment().format("dddd");
     },
-    // markComplete(id, type) {
-    //   console.log('Working');
+    openModal(type) {
+      this.todoType = type;
+      this.showModal = true;
+    },
+    addTodo(newTodo) {
+      var type = this.todoType;
+      var todos = JSON.parse(localStorage.getItem('todos'));
+      var newId = Math.floor(Math.random() * 1000);
+      newTodo.id = newId
       
-    //   var todos = JSON.parse(localStorage.getItem('todos'));
-    //   todos.type.todos[id].completed = !todos.type.todos[id].completed;
+      todos[type].todos.push(newTodo)
 
-    //   localStorage.setItem('todos', JSON.stringify(todos));
+      localStorage.setItem('todos', JSON.stringify(todos))
 
-    //   this.getTodos()
-    // },
-    // deleteTodo(id) {
-    //   var todo = this.todos.morning.filter(todo => todo.id == id)
-    //   todo.completed = !todo.completed
-    // }
-  },
+      this.getTodos()
+    }
+   },
   mounted() {
     this.getName();
     this.getDate();
@@ -88,7 +95,11 @@ export default {
 
 <style scoped>
   #homeContainer {
-    height: 100vh;
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    padding-bottom: 40px;
+    transform: translate(-50%);
     display: flex;
     flex-direction: column;
     justify-content: center;

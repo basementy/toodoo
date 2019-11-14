@@ -5,7 +5,7 @@
         <button @click="$emit('closeModal')" id="closeModal">+</button>
       </div>
       <div id="modalContent">
-        <form>
+        <form @submit="sendTodo">
           <input 
             type="text"
             v-model="title"
@@ -14,6 +14,9 @@
             placeholder="What's the task?">
           <div id="modalDetail"></div>
           <button type="submit" id="modalButton">Add +</button>
+          <div v-if="error" id="modalError">
+            <span id="errorMessage">Please, tell me the name of the task!</span>
+          </div>
         </form>
       </div>
     </div>
@@ -25,19 +28,25 @@ export default {
   name: "Modal",
   data() {
     return {
-      title: ''
+      title: '',
+      error: false
     }
   },
   methods: {
-    addTodo(event) {
+    sendTodo(event) {
       event.preventDefault();
-
-      const newTodo = {
-        title: this.title,
-        completed: false
+      
+      if(this.title) {
+        const newTodo = {
+          title: this.title,
+          completed: false
+        };
+  
+        this.$emit('addTodo', newTodo);
+        this.$emit('closeModal');
+      } else {
+        this.error = true;
       }
-
-      this.$emit('addTodo', newTodo)
     }
   }
 }
@@ -47,7 +56,7 @@ export default {
   #modalContainer {
     width: 100vw;
     height: 100vh;
-    position: absolute;
+    position: fixed;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -63,7 +72,7 @@ export default {
   }
 
   #modalHeader {
-    width: 70%;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -122,5 +131,30 @@ export default {
     font-weight: 500;
   } #modalButton:hover {
     transform: translateY(-3px);
+  }
+
+  @keyframes error {
+  from {opacity: 0}
+  to {opacity: 1}
+  }
+
+  @-webkit-keyframes error {
+  from {opacity: 0}
+  to {opacity: 1}
+  }
+
+  #modalError {
+    margin: 35px 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    -webkit-animation-name: error; /* Safari 4.0 - 8.0 */
+    -webkit-animation-duration: 2s; /* Safari 4.0 - 8.0 */
+    animation-name: error;
+    animation-duration: 1s;
+  } #errorMessage {
+    color: rgb(189, 79, 79);
+    font-weight: 600;
+    text-align: center;
   }
 </style>

@@ -1,12 +1,12 @@
 <template>
-  <div class="card mt-4 m-2 col-9 col-md-5 col-sm-12 pb-5" id="todoCard">
+  <div class="card mt-4 mb-4 m-2 col-9 col-md-5 col-sm-12 pb-5" id="todoCard">
     <div id="cardTitle">
-      <h5 id="cardTitle">{{ title }}</h5>
+      <h5 id="cardTitle">{{ cardTitle }}</h5>
     </div>
     <div id="todoList" :key="todo.id" v-for="todo in todos">
-      <TodoItem :todo="todo" :type="type" v-on:deleteTodo="$emit('deleteTodo', todo.id, type)"/>
+      <TodoItem :todo="todo" :type="type" v-on:update="$emit('update')" v-on:deleteTodo="$emit('deleteTodo', todo.id, type)"/>
     </div>
-    <button @click="$emit('openModal', true)" id="addButton">+</button>
+    <button @click="$emit('openModal', type)" id="addButton">+</button>
   </div>
 </template>
 
@@ -16,7 +16,7 @@ import TodoItem from './TodoItem';
 export default {
   name: "TodoCard",
   props: [
-    "title",
+    "cardTitle",
     "todos",
     "type"
   ],
@@ -37,7 +37,7 @@ export default {
   #cardTitle {
     margin-top: 15px;
     margin-bottom: 10px;
-    color: rgb(22, 22, 22);
+    color: #8A6BF2;
     font-size: 16px;
     font-weight: 600;
   }
