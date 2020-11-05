@@ -1,4 +1,4 @@
-# Minimal To-do
+# Toodoo
 
 This is a repository for the challenge sent by FESC. The challenge consists of a simple To-do List.
 
